@@ -5,6 +5,9 @@ import * as serviceWorker from './serviceWorker';
 
 class MyComp extends Component {
 
+    state={
+        lastname: 'Escobar'
+    }
     componentWillUnmount(){
         console.log('componentWillUnmount');
     }
@@ -15,7 +18,15 @@ class MyComp extends Component {
 
     render(){
         console.log('render child');
-        return <div>I am child</div>
+        return <>
+                    <div>I am child {this.props.name}</div>
+                    <button onClick={
+                        () => this.setState({
+                            lastname: 'Ochoa'
+                        })
+                    }>{'Click on me !!'}</button>
+                    {this.props.children({ lastname: this.state.lastname})}
+                </>
     }
 }
 
@@ -48,7 +59,17 @@ class App extends Component {
                 onClick={this.onClickEvent}
             >Press Me</button>
                 <div>{this.state.names}</div>
-                {this.state.isMounted && <MyComp />}
+                {this.state.isMounted &&
+                <MyComp name={'Ernesto'}>
+                    {
+                        (props) => {
+                            console.log(props)
+                            return <div>hello {props.lastname}</div>
+                        }
+                    }
+                </MyComp>
+
+                    }
         </div>)
     }
 
@@ -70,3 +91,4 @@ ReactDOM.render(<App/>, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
