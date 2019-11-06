@@ -37,6 +37,30 @@ const UserInfo = ({
 
 const element = React.createElement('h1', null, 'User Info')
 
+const users = [
+    {
+        id: '123',
+        name: 'Ernesto',
+        lastname: 'Escobar',
+        phone:'55-42-32-44',
+        color:'gray'
+    },
+    {
+        id: '12334',
+        name: 'Gerardo',
+        lastname: 'Sanchez',
+        phone:'55-42-32-44',
+        color:'lightblue'
+    },
+    {
+        id: '12334SDS',
+        name: 'Lupita',
+        lastname: 'Ulloa',
+        phone:'55-42-32-44',
+        color:'red'
+    }
+]
+
 class App extends Component {
 
     constructor(props){
@@ -70,7 +94,33 @@ class App extends Component {
     render() {
         return <>
             {element}
-            <UserInfo
+            {
+                users.map((user) => {
+                    return (
+                        <UserInfo
+                            key={user.id}
+                            name={user.name}
+                            lastname={user.lastname}
+                            phone={user.phone}
+                            color={user.color}
+                        />)
+                })
+            }
+            <div onClick={this.onClickEvent}>Hola Mundo { this.state.name }</div>
+            </>
+    }
+
+}
+
+ReactDOM.render(<App/>, document.getElementById('root'));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
+
+
+{/* <UserInfo
                 name={'Ernesto'}
                 lastname={'Escobar'}
                 phone={'55-42-32-44'}
@@ -87,17 +137,4 @@ class App extends Component {
                 lastname={'Escobar'}
                 phone={'55-42-32-44'}
                 color={'purple'}
-            />
-            <div onClick={this.onClickEvent}>Hola Mundo { this.state.name }</div>
-            </>
-    }
-
-}
-
-ReactDOM.render(<App/>, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
-
+            /> */}
