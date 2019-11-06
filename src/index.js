@@ -1,89 +1,69 @@
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import PropTypes from 'prop-types';
 
-class MyComp extends Component {
-
-    state={
-        lastname: 'Escobar'
-    }
-    componentWillUnmount(){
-        console.log('componentWillUnmount');
-    }
-
-    UNSAFE_componentWillMount() {
-        console.log('componentWillMount');
-    }
-
-    render(){
-        console.log('render child');
-        return <>
-                    <div>I am child {this.props.name}</div>
-                    <button onClick={
-                        () => this.setState({
-                            lastname: 'Ochoa'
-                        })
-                    }>{'Click on me !!'}</button>
-                    {this.props.children({ lastname: this.state.lastname})}
-                </>
-    }
-}
 
 class App extends Component {
 
-    constructor(props) {
+
+    constructor(props){
         super(props);
         this.state = {
-            names: [],
-            isMounted: true
-        };
-        this.onClickEvent = this.onClickEvent.bind(this)
-        console.log('constructor');
-      }
-
-    onClickEvent(){
-        console.log('you pressed me');
-        this.setState( prevState => {
-            return {
-                isMounted: !prevState.isMounted
-            }
-        })
+            name: 'Fernando',
+            lastname: 'Gonzalez',
+            isError: false,
+            validationMessage: ''
+        }
+        this.onSubmitEvent = this.onSubmitEvent.bind(this);
     }
 
-    render() {
-        console.log('render');
-        return (<div>
-            Hello World
-            <button
-                onClick={this.onClickEvent}
-            >Press Me</button>
-                <div>{this.state.names}</div>
-                {this.state.isMounted &&
-                <MyComp name={'Ernesto'}>
-                    {
-                        (props) => {
-                            console.log(props)
-                            return <div>hello {props.lastname}</div>
-                        }
-                    }
-                </MyComp>
-
-                    }
-        </div>)
+    onSubmitEvent(e) {
+        e.preventDefault();
+        console.log(this.state);
+        const {name, lastname} = this.state;
+        if(name.length > 10){
+            console.error('this exceed the length of name');
+            this.setState({
+                isError: true,
+                validationMessage: 'Error on this element' + name
+            })
+        }
     }
 
-    componentDidMount() {
-        console.log('componentDidMount');
-        this.setState({
-            names: ['Gabriel']
-        })
-    }
-
-    componentDidUpdate(){
-        console.log('componentDidUpdate');
+    render(){
+        console.log(this.state);
+        return (
+            <div>
+                <form onSubmit={this.onSubmitEvent}>
+                    <input
+                        defaultValue={this.state.name}
+                        type="text" 
+                        name="name"
+                        onChange={(e) => {
+                            console.log(e.target.value)
+                            this.setState({
+                                name: e.target.value
+                            })
+                            }}/>
+                        {this.state.isError && <span style={{
+                            color: 'red'
+                        }}>{this.state.validationMessage}</span>}
+                    <input type="text" defaultValue={this.state.lastname} name="lastname" onChange={(e) => {
+                            console.log(e.target.value)
+                            this.setState({
+                                lastname: e.target.value
+                            })
+                            }}/>
+                    <button>Validate</button>
+                </form>
+            </div>
+        )
     }
 }
+
 
 ReactDOM.render(<App/>, document.getElementById('root'));
 
