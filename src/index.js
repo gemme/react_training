@@ -2,87 +2,96 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import styled from 'styled-components';
 
-class MyComp extends Component {
+const Container = styled.div`
+    font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    color: ${props => props.color};
+`;
 
-    state={
-        lastname: 'Escobar'
-    }
-    componentWillUnmount(){
-        console.log('componentWillUnmount');
-    }
 
-    UNSAFE_componentWillMount() {
-        console.log('componentWillMount');
-    }
+/* function UserInfo(props) {
+    return (
+        <div>
+            <span>name: {props.name}</span>
+            <span>last name: {props.lastname}</span>
+            <span>phone: {props.phone}</span>
+        </div>
+    )
+} */
 
-    render(){
-        console.log('render child');
-        return <>
-                    <div>I am child {this.props.name}</div>
-                    <button onClick={
-                        () => this.setState({
-                            lastname: 'Ochoa'
-                        })
-                    }>{'Click on me !!'}</button>
-                    {this.props.children({ lastname: this.state.lastname})}
-                </>
-    }
-}
+const UserInfo = ({
+    name,
+    lastname,
+    phone,
+    color
+}) => (
+    <Container color={color}>
+        <span>name: {name}</span>
+        <span>last name: {lastname}</span>
+        <span>phone: {phone}</span>
+    </Container>
+)
+
+const element = React.createElement('h1', null, 'User Info')
 
 class App extends Component {
 
-    constructor(props) {
+    constructor(props){
         super(props);
         this.state = {
-            names: [],
-            isMounted: true
-        };
-        this.onClickEvent = this.onClickEvent.bind(this)
-        console.log('constructor');
-      }
+            name: 'Gabriel'
+        }
+        this.onClickEvent = this.onClickEvent.bind(this);
+    }
 
-    onClickEvent(){
-        console.log('you pressed me');
-        this.setState( prevState => {
+    onClickEvent(event) {
+        //this.state.name = 'Ernesto';
+        console.log(event);
+        console.log(this);
+        this.setState(function(prevState){
             return {
-                isMounted: !prevState.isMounted
+                name: 'Ernesto'
             }
         })
     }
 
+    /* <UserInfo
+                name={'Ernesto'}
+                lastname={'Escobar'}
+                phone={'55-42-32-44'}
+            />
+            <div onClick={this.onClickEvent}>Hola Mundo { this.state.name }</div> */
+    //JSX
+
+    
     render() {
-        console.log('render');
-        return (<div>
-            Hello World
-            <button
-                onClick={this.onClickEvent}
-            >Press Me</button>
-                <div>{this.state.names}</div>
-                {this.state.isMounted &&
-                <MyComp name={'Ernesto'}>
-                    {
-                        (props) => {
-                            console.log(props)
-                            return <div>hello {props.lastname}</div>
-                        }
-                    }
-                </MyComp>
-
-                    }
-        </div>)
+        return <>
+            {element}
+            <UserInfo
+                name={'Ernesto'}
+                lastname={'Escobar'}
+                phone={'55-42-32-44'}
+                color={'gray'}
+            />
+            <UserInfo
+                name={'Gerardo'}
+                lastname={'Escobar'}
+                phone={'55-42-32-44'}
+                color={'lightblue'}
+            />
+            <UserInfo
+                name={'Lupita'}
+                lastname={'Escobar'}
+                phone={'55-42-32-44'}
+                color={'purple'}
+            />
+            <div onClick={this.onClickEvent}>Hola Mundo { this.state.name }</div>
+            </>
     }
 
-    componentDidMount() {
-        console.log('componentDidMount');
-        this.setState({
-            names: ['Gabriel']
-        })
-    }
-
-    componentDidUpdate(){
-        console.log('componentDidUpdate');
-    }
 }
 
 ReactDOM.render(<App/>, document.getElementById('root'));
