@@ -1,0 +1,21 @@
+componentDidMount(){
+        fetch('https://demo7778799.mockable.io/user', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+              }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            
+        })
+        .catch(e => console.log('error', e))
+    }
+
+    {
+    "name": "Fernando",
+    "lastname": "Gonzalez",
+    "isError": false,
+    "validationMessage": ""
+}
