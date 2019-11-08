@@ -1,0 +1,64 @@
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import * as serviceWorker from './serviceWorker';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+
+
+
+
+const Child = React.memo(
+    function () {
+    console.log('render Child');
+    return(
+        <div>I am child </div>
+    );
+})
+
+/* class Child extends React.PureComponent{
+    render() {
+        console.log('render Child');
+        return(
+            <div>I am child </div>
+        );
+    }
+} */
+
+class App extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            counter: 0
+        };
+    }
+
+    render() {
+        return(
+            <>
+                <Child />
+                <Child />
+                <Child />
+                <div>Hello world {this.state.counter}</div>
+                <button onClick={
+                    () =>  this.setState(prevState => {
+                        return {
+                            counter: prevState.counter+1
+                        }
+                    })
+                }>Click me</button>
+            </>
+        )
+    }
+}
+
+
+ReactDOM.render(<App/>, document.getElementById('root'));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
+
